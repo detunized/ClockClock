@@ -1,0 +1,5 @@
+Clock Clock
+
+This is an unusual megaclock made up of smaller clocks which in a group effort display time in an interesting way.  Clock Clock has minimalistic attractive design and can be used as a nightstand, it could even tick for you like a piece of real hardware.  Clock Clock is also interactive: you can shake it and spin the hands with your fingers.
+
+clock, time, clock clock, nightstand, funny, interactive, unusual
