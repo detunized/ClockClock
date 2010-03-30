@@ -1,5 +1,6 @@
 #import "ClockClockViewController.h"
 #import "ClockView.h"
+#import "Settings.h"
 
 //#define TRANSITION_TEST
 //#define SHOW_NICE_TIME
@@ -8,6 +9,7 @@
 
 @synthesize _date;
 @synthesize _seconds;
+@synthesize _info;
 
 static float const _initialAppearAnimationDuration = 0.5f;
 static float const _infoFadeAnimationDuration = 0.5f;
@@ -115,7 +117,7 @@ static float const _digits[10][6][2] =
 		[_seconds setSeconds:second];
 		_currentSeconds = second;
 		
-		if (_infoVisible)
+		if (_infoVisible && Settings::Get().getPlayTickSound())
 		{
 			[_tick play];
 		}
@@ -156,6 +158,7 @@ static float const _digits[10][6][2] =
 	// hide info
 	_date.alpha = 0;
 	_seconds.alpha = 0;
+	_info.alpha = 0;
 	_infoVisible = false;
 	_goingCrazy = false;
 	_timeNeedUpdating = false;
@@ -288,22 +291,6 @@ static float const _digits[10][6][2] =
 {
 	if (!_wasMoved)
 	{
-		if (!_infoVisible)
-		{
-			[[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
-			SettingsViewController *settings = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
-			UINavigationController *theNavController = [[UINavigationController alloc] initWithRootViewController:settings];
-//			settings.title = @"Settings";
-			[settings release];
-			
-			theNavController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;//UIModalTransitionStyleFlipHorizontal;
-			[self presentModalViewController:theNavController animated:YES];
-			
-			theNavController.title = @"Yo!";
-			
-			[theNavController release];
-		}
-#if 0
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationDuration:_infoFadeAnimationDuration];
 		[UIView setAnimationBeginsFromCurrentState:YES];
@@ -313,18 +300,19 @@ static float const _digits[10][6][2] =
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
 			_date.alpha = 0;
 			_seconds.alpha = 0;
+			_info.alpha = 0;
 		}
 		else
 		{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
 			_date.alpha = 1;
 			_seconds.alpha = 1;
+			_info.alpha = 1;
 		}
 		
 		_infoVisible = !_infoVisible;
 		
 		[UIView commitAnimations];
-#endif
 	}
 }
 
@@ -381,6 +369,22 @@ static float const _digits[10][6][2] =
 	{
 		[self goCrazy:_goCrazySpinAngle duration:_goCrazyAnimationDuration];
 	}
+}
+
+- (IBAction)onInfoClicked:(id)sender
+{
+	[[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
+
+	SettingsViewController *settings = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+	UINavigationController *theNavController = [[UINavigationController alloc] initWithRootViewController:settings];
+	[settings release];
+	
+	theNavController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;//UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:theNavController animated:YES];
+	
+	theNavController.title = @"Yo!";
+	
+	[theNavController release];
 }
 
 @end

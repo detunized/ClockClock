@@ -7,8 +7,9 @@
 
 @interface ClockClockViewController: UIViewController
 {
-	UILabel *_date;
-	SecondsView *_seconds;
+	IBOutlet UILabel *_date;
+	IBOutlet SecondsView *_seconds;
+	IBOutlet UIButton *_info;
 	
 	std::vector<ClockView *> _clocks;
 	NSDateFormatter *_dateFormatter;
@@ -27,5 +28,8 @@
 
 @property (nonatomic, retain) IBOutlet UILabel *_date;
 @property (nonatomic, retain) IBOutlet SecondsView *_seconds;
+@property (nonatomic, retain) IBOutlet UIButton *_info;
+
+- (IBAction)onInfoClicked:(id)sender;
 
 @end

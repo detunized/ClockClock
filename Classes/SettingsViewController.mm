@@ -23,6 +23,12 @@ enum Section
     [super viewDidLoad];
 	
 	self.title = @"Settings";
+
+	UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
+																	style:UIBarButtonItemStyleDone
+																   target:self
+																   action:@selector(onDonePressed:)] autorelease];
+	self.navigationItem.rightBarButtonItem = saveButton;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -95,7 +101,12 @@ enum Section
 		case Section_TickSound:
 		{
 			cell.textLabel.text = NSLocalizedString(@"Tick Sound", @"");
-			cell.accessoryView = [[[UISwitch alloc] init] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			
+			UISwitch *button = [[[UISwitch alloc] init] autorelease];
+			button.on = Settings::Get().getPlayTickSound();
+			[button addTarget:self action:@selector(onTickSoundEnabled:) forControlEvents:UIControlEventValueChanged];
+			cell.accessoryView = button;
 
 			break;
 		}
@@ -146,6 +157,17 @@ enum Section
 	}
 	
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:Section_Alarms] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)onTickSoundEnabled:(id)sender
+{
+	Settings::Get().setPlayTickSound(((UISwitch *)sender).on);
+}
+
+- (void)onDonePressed:(id)sender
+{
+	[[UIApplication sharedApplication] setStatusBarHidden:YES animated:YES];
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end
