@@ -3,6 +3,7 @@
 #import <vector>
 #import "ClockView.h"
 #import "SecondsView.h"
+#import "SettingsViewController.h"
 
 @interface ClockClockViewController: UIViewController
 {

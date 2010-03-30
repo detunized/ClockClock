@@ -1,11 +1,3 @@
-//
-//  ClockClockAppDelegate.m
-//  ClockClock
-//
-//  Created by Dmitry Yakimenko on 3/21/10.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
-//
-
 #import "ClockClockAppDelegate.h"
 
 @implementation ClockClockAppDelegate

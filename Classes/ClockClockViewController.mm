@@ -235,7 +235,7 @@ static float const _digits[10][6][2] =
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
 - (void)didReceiveMemoryWarning
@@ -288,6 +288,22 @@ static float const _digits[10][6][2] =
 {
 	if (!_wasMoved)
 	{
+		if (!_infoVisible)
+		{
+			[[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
+			SettingsViewController *settings = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+			UINavigationController *theNavController = [[UINavigationController alloc] initWithRootViewController:settings];
+//			settings.title = @"Settings";
+			[settings release];
+			
+			theNavController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;//UIModalTransitionStyleFlipHorizontal;
+			[self presentModalViewController:theNavController animated:YES];
+			
+			theNavController.title = @"Yo!";
+			
+			[theNavController release];
+		}
+#if 0
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationDuration:_infoFadeAnimationDuration];
 		[UIView setAnimationBeginsFromCurrentState:YES];
@@ -308,6 +324,7 @@ static float const _digits[10][6][2] =
 		_infoVisible = !_infoVisible;
 		
 		[UIView commitAnimations];
+#endif
 	}
 }
 

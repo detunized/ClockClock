@@ -15,6 +15,20 @@
 		2899E5220DE3E06400AC0155 /* ClockClockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* ClockClockViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* ClockClockViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* ClockClockViewController.mm */; };
+		609F9F5C115FF7FA004FFB65 /* SettingsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 609F9F5A115FF7FA004FFB65 /* SettingsViewController.mm */; };
+		609F9F5D115FF7FA004FFB65 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 609F9F5B115FF7FA004FFB65 /* SettingsViewController.xib */; };
+		609FA1781160BAE7004FFB65 /* Settings.mm in Sources */ = {isa = PBXBuildFile; fileRef = 609FA1771160BAE7004FFB65 /* Settings.mm */; };
+		609FA28E1160D925004FFB65 /* AlarmTimeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 609FA28C1160D925004FFB65 /* AlarmTimeViewController.mm */; };
+		609FA28F1160D925004FFB65 /* AlarmTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 609FA28D1160D925004FFB65 /* AlarmTimeViewController.xib */; };
+		609FA2991160DB56004FFB65 /* AlarmViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 609FA2971160DB56004FFB65 /* AlarmViewController.mm */; };
+		609FA29A1160DB56004FFB65 /* AlarmViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 609FA2981160DB56004FFB65 /* AlarmViewController.xib */; };
+		609FA2EE1160E89F004FFB65 /* AlarmRepeatViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 609FA2EC1160E89F004FFB65 /* AlarmRepeatViewController.mm */; };
+		609FA2EF1160E89F004FFB65 /* AlarmRepeatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 609FA2ED1160E89F004FFB65 /* AlarmRepeatViewController.xib */; };
+		609FA30A1160EB93004FFB65 /* AlarmNameViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 609FA3081160EB93004FFB65 /* AlarmNameViewController.mm */; };
+		609FA30B1160EB93004FFB65 /* AlarmNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 609FA3091160EB93004FFB65 /* AlarmNameViewController.xib */; };
+		609FA49211611B18004FFB65 /* AlarmSoundViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 609FA49011611B18004FFB65 /* AlarmSoundViewController.mm */; };
+		609FA49311611B18004FFB65 /* AlarmSoundViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 609FA49111611B18004FFB65 /* AlarmSoundViewController.xib */; };
+		609FA4A611612115004FFB65 /* alarms in Resources */ = {isa = PBXBuildFile; fileRef = 609FA4A211612115004FFB65 /* alarms */; };
 		60BCC142115700A000844D6A /* SecondsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 60BCC141115700A000844D6A /* SecondsView.mm */; };
 		60BCC1CB115712EB00844D6A /* tick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 60BCC1CA115712EB00844D6A /* tick.wav */; };
 		60BCC1F71157166B00844D6A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BCC1F61157166B00844D6A /* AVFoundation.framework */; };
@@ -38,6 +52,27 @@
 		28D7ACF70DDB3853001CB0EB /* ClockClockViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClockClockViewController.mm; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ClockClock_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClockClock_Prefix.pch; sourceTree = "<group>"; };
+		609F9F59115FF7FA004FFB65 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		609F9F5A115FF7FA004FFB65 /* SettingsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsViewController.mm; sourceTree = "<group>"; };
+		609F9F5B115FF7FA004FFB65 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SettingsViewController.xib; path = Classes/SettingsViewController.xib; sourceTree = "<group>"; };
+		609FA05A11602BCC004FFB65 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		609FA1771160BAE7004FFB65 /* Settings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Settings.mm; sourceTree = "<group>"; };
+		609FA28B1160D925004FFB65 /* AlarmTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmTimeViewController.h; sourceTree = "<group>"; };
+		609FA28C1160D925004FFB65 /* AlarmTimeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlarmTimeViewController.mm; sourceTree = "<group>"; };
+		609FA28D1160D925004FFB65 /* AlarmTimeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AlarmTimeViewController.xib; path = Classes/AlarmTimeViewController.xib; sourceTree = "<group>"; };
+		609FA2961160DB56004FFB65 /* AlarmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmViewController.h; sourceTree = "<group>"; };
+		609FA2971160DB56004FFB65 /* AlarmViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlarmViewController.mm; sourceTree = "<group>"; };
+		609FA2981160DB56004FFB65 /* AlarmViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AlarmViewController.xib; path = Classes/AlarmViewController.xib; sourceTree = "<group>"; };
+		609FA2EB1160E89F004FFB65 /* AlarmRepeatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmRepeatViewController.h; sourceTree = "<group>"; };
+		609FA2EC1160E89F004FFB65 /* AlarmRepeatViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlarmRepeatViewController.mm; sourceTree = "<group>"; };
+		609FA2ED1160E89F004FFB65 /* AlarmRepeatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AlarmRepeatViewController.xib; path = Classes/AlarmRepeatViewController.xib; sourceTree = "<group>"; };
+		609FA3071160EB93004FFB65 /* AlarmNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmNameViewController.h; sourceTree = "<group>"; };
+		609FA3081160EB93004FFB65 /* AlarmNameViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlarmNameViewController.mm; sourceTree = "<group>"; };
+		609FA3091160EB93004FFB65 /* AlarmNameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AlarmNameViewController.xib; path = Classes/AlarmNameViewController.xib; sourceTree = "<group>"; };
+		609FA48F11611B18004FFB65 /* AlarmSoundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmSoundViewController.h; sourceTree = "<group>"; };
+		609FA49011611B18004FFB65 /* AlarmSoundViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlarmSoundViewController.mm; sourceTree = "<group>"; };
+		609FA49111611B18004FFB65 /* AlarmSoundViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AlarmSoundViewController.xib; path = Classes/AlarmSoundViewController.xib; sourceTree = "<group>"; };
+		609FA4A211612115004FFB65 /* alarms */ = {isa = PBXFileReference; lastKnownFileType = folder; path = alarms; sourceTree = "<group>"; };
 		60BCC140115700A000844D6A /* SecondsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondsView.h; sourceTree = "<group>"; };
 		60BCC141115700A000844D6A /* SecondsView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SecondsView.mm; sourceTree = "<group>"; };
 		60BCC1CA115712EB00844D6A /* tick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tick.wav; sourceTree = "<group>"; };
@@ -70,6 +105,16 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				609FA3071160EB93004FFB65 /* AlarmNameViewController.h */,
+				609FA3081160EB93004FFB65 /* AlarmNameViewController.mm */,
+				609FA2EB1160E89F004FFB65 /* AlarmRepeatViewController.h */,
+				609FA2EC1160E89F004FFB65 /* AlarmRepeatViewController.mm */,
+				609FA48F11611B18004FFB65 /* AlarmSoundViewController.h */,
+				609FA49011611B18004FFB65 /* AlarmSoundViewController.mm */,
+				609FA28B1160D925004FFB65 /* AlarmTimeViewController.h */,
+				609FA28C1160D925004FFB65 /* AlarmTimeViewController.mm */,
+				609FA2961160DB56004FFB65 /* AlarmViewController.h */,
+				609FA2971160DB56004FFB65 /* AlarmViewController.mm */,
 				1D3623240D0F684500981E51 /* ClockClockAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ClockClockAppDelegate.mm */,
 				28D7ACF60DDB3853001CB0EB /* ClockClockViewController.h */,
@@ -80,6 +125,10 @@
 				60DBB5361156B0B6001E7FB2 /* ClockView.mm */,
 				60BCC140115700A000844D6A /* SecondsView.h */,
 				60BCC141115700A000844D6A /* SecondsView.mm */,
+				609F9F59115FF7FA004FFB65 /* SettingsViewController.h */,
+				609F9F5A115FF7FA004FFB65 /* SettingsViewController.mm */,
+				609FA05A11602BCC004FFB65 /* Settings.h */,
+				609FA1771160BAE7004FFB65 /* Settings.mm */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -118,11 +167,17 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				60CBFD831156810A0019B195 /* Icon.png */,
-				60CBFD6711567E980019B195 /* Default.png */,
-				2899E5210DE3E06400AC0155 /* ClockClockViewController.xib */,
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				609FA3091160EB93004FFB65 /* AlarmNameViewController.xib */,
+				609FA2ED1160E89F004FFB65 /* AlarmRepeatViewController.xib */,
+				609FA49111611B18004FFB65 /* AlarmSoundViewController.xib */,
+				609FA28D1160D925004FFB65 /* AlarmTimeViewController.xib */,
+				609FA2981160DB56004FFB65 /* AlarmViewController.xib */,
 				8D1107310486CEB800E47090 /* ClockClock-Info.plist */,
+				2899E5210DE3E06400AC0155 /* ClockClockViewController.xib */,
+				60CBFD6711567E980019B195 /* Default.png */,
+				60CBFD831156810A0019B195 /* Icon.png */,
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				609F9F5B115FF7FA004FFB65 /* SettingsViewController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -140,6 +195,7 @@
 		60DBB4871156A140001E7FB2 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				609FA4A211612115004FFB65 /* alarms */,
 				60BCC1CA115712EB00844D6A /* tick.wav */,
 				60DBB4881156A140001E7FB2 /* background.png */,
 			);
@@ -194,6 +250,13 @@
 				60CBFD841156810A0019B195 /* Icon.png in Resources */,
 				60DBB4891156A140001E7FB2 /* background.png in Resources */,
 				60BCC1CB115712EB00844D6A /* tick.wav in Resources */,
+				609F9F5D115FF7FA004FFB65 /* SettingsViewController.xib in Resources */,
+				609FA28F1160D925004FFB65 /* AlarmTimeViewController.xib in Resources */,
+				609FA29A1160DB56004FFB65 /* AlarmViewController.xib in Resources */,
+				609FA2EF1160E89F004FFB65 /* AlarmRepeatViewController.xib in Resources */,
+				609FA30B1160EB93004FFB65 /* AlarmNameViewController.xib in Resources */,
+				609FA49311611B18004FFB65 /* AlarmSoundViewController.xib in Resources */,
+				609FA4A611612115004FFB65 /* alarms in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +273,13 @@
 				60DBB5371156B0B6001E7FB2 /* ClockView.mm in Sources */,
 				60DBB66B1156C8C2001E7FB2 /* ClockClockWindow.mm in Sources */,
 				60BCC142115700A000844D6A /* SecondsView.mm in Sources */,
+				609F9F5C115FF7FA004FFB65 /* SettingsViewController.mm in Sources */,
+				609FA1781160BAE7004FFB65 /* Settings.mm in Sources */,
+				609FA28E1160D925004FFB65 /* AlarmTimeViewController.mm in Sources */,
+				609FA2991160DB56004FFB65 /* AlarmViewController.mm in Sources */,
+				609FA2EE1160E89F004FFB65 /* AlarmRepeatViewController.mm in Sources */,
+				609FA30A1160EB93004FFB65 /* AlarmNameViewController.mm in Sources */,
+				609FA49211611B18004FFB65 /* AlarmSoundViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
