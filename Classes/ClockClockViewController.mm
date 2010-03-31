@@ -233,7 +233,7 @@ static float const _digits[10][6][2] =
 								   userInfo:nil
 									repeats:YES];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shakeCallback) name:@"shake" object:nil];                                         
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shakeCallback) name:@"shake" object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

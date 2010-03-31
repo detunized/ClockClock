@@ -5,6 +5,13 @@
 
 @synthesize alarm;
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	
+	self.title = NSLocalizedString(@"Sound", @"");
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
@@ -32,18 +39,17 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	if ([indexPath section] == 0)
+	if (indexPath.section == 0)
 	{
-		assert([indexPath row] == 0);
+		assert(indexPath.row == 0);
 		cell.textLabel.text = NSLocalizedString(@"None", @"");
-		cell.accessoryType = self.alarm->getSound() == "" ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+		cell.accessoryType = [self.alarm->getSound() isEqualToString:@""] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	}
 	else
 	{
-		int row = [indexPath row];
-		std::string const &sound = Alarm::GetSound(row);
-		cell.textLabel.text = [NSString stringWithUTF8String:sound.c_str()];
-		cell.accessoryType = self.alarm->getSound() == sound ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+		NSString *sound = Alarm::GetSound(indexPath.row);
+		cell.textLabel.text = sound;
+		cell.accessoryType = [self.alarm->getSound() isEqualToString:sound] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	}
 
     return cell;
@@ -51,19 +57,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ([indexPath section] == 0)
+	if (indexPath.section == 0)
 	{
-		assert([indexPath row] == 0);
-		self.alarm->setSound("");
+		assert(indexPath.row == 0);
+		self.alarm->setSound(@"");
 	}
 	else
 	{
-		int row = [indexPath row];
-		std::string const &sound = Alarm::GetSound(row);
-		self.alarm->setSound(sound);
+		int row = indexPath.row;
+		self.alarm->setSound(Alarm::GetSound(row));
 		
+		// TODO: release player when done
 		AVAudioPlayer *player = [AVAudioPlayer alloc];
-		NSURL *url = [NSURL fileURLWithPath:[NSString stringWithUTF8String:Alarm::GetSoundFilename(row).c_str()]];
+		NSURL *url = [NSURL fileURLWithPath:Alarm::GetSoundFilename(row)];
 		NSError *error;
 		[player initWithContentsOfURL:url error:&error];
 		[player play];

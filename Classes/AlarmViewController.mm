@@ -34,6 +34,8 @@ enum SectionTime
 	
 	if (self.isNewAlarm)
 	{
+		self.title = NSLocalizedString(@"New Alarm", @"");
+		
 		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 																		  style:UIBarButtonItemStyleBordered
 																		 target:self
@@ -45,6 +47,10 @@ enum SectionTime
 																	   target:self
 																	   action:@selector(save:)] autorelease];
 		self.navigationItem.rightBarButtonItem = saveButton;
+	}
+	else
+	{
+		self.title = NSLocalizedString(@"Edit Alarm", @"");
 	}
 }
 
@@ -73,11 +79,13 @@ enum SectionTime
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *CellIdentifier = @"Cell";
-    
+	
+	// TODO: hacky
+	UITableViewCellStyle style = indexPath.section == Section_Time ? UITableViewCellStyleValue1 : UITableViewCellStyleDefault;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
 	{
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:CellIdentifier] autorelease];
     }
     
 	switch ([indexPath section])
@@ -101,6 +109,7 @@ enum SectionTime
 				case SectionTime_Time:
 				{
 					cell.textLabel.text = NSLocalizedString(@"Time", @"");
+					cell.detailTextLabel.text = _alarm.getTimeString();
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					
 					break;
@@ -108,18 +117,21 @@ enum SectionTime
 				case SectionTime_Repeat:
 				{
 					cell.textLabel.text = NSLocalizedString(@"Repeat", @"");
+					cell.detailTextLabel.text = _alarm.getRepeatString();
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					break;
 				}
 				case SectionTime_Sound:
 				{
 					cell.textLabel.text = NSLocalizedString(@"Sound", @"");
+					cell.detailTextLabel.text = _alarm.getSoundString();
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					break;
 				}
 				case SectionTime_Name:
 				{
 					cell.textLabel.text = NSLocalizedString(@"Name", @"");
+					cell.detailTextLabel.text = _alarm.getNameString();
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					break;
 				}
@@ -208,6 +220,13 @@ enum SectionTime
 			assert(false);
 		}
 	}
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:Section_Time] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

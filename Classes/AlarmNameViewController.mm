@@ -17,7 +17,7 @@
 {
 	[super viewWillAppear:animated];
 	
-	_name.text = [NSString stringWithUTF8String:self.alarm->getName().c_str()];
+	_name.text = self.alarm->getName();
 	[_name becomeFirstResponder];
 }
 
@@ -25,7 +25,7 @@
 {
 	[super viewWillDisappear:animated];
 	
-	self.alarm->setName([_name.text UTF8String]);
+	self.alarm->setName(_name.text);
 }
 
 @end

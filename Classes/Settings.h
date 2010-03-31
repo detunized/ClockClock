@@ -20,8 +20,8 @@ public:
 	};
 	
 	static int GetSoundCount();
-	static std::string const &GetSound(int index);
-	static std::string const &GetSoundFilename(int index);
+	static NSString *GetSound(int index);
+	static NSString *GetSoundFilename(int index);
 	
 	Alarm()
 	{
@@ -34,6 +34,8 @@ public:
 			_repeat[i] = false;
 		}
 	}
+	
+	Alarm(NSDictionary *archive);
 	
 	bool getEnabled() const
 	{
@@ -75,25 +77,32 @@ public:
 		_repeat[day] = repeat;
 	}
 	
-	std::string const &getName() const
+	NSString *getName() const
 	{
-		return _name;
-	}
-	
-	void setName(std::string const &name)
-	{
-		_name = name;
+		return [NSString stringWithUTF8String:_name.c_str()];
 	}
 
-	std::string const &getSound() const
+	void setName(NSString *name)
 	{
-		return _sound;
+		_name = [name UTF8String];
+	}
+
+	NSString *getSound() const
+	{
+		return [NSString stringWithUTF8String:_sound.c_str()];
 	}
 	
-	void setSound(std::string const &sound)
+	void setSound(NSString *sound)
 	{
-		_sound = sound;
+		_sound = [sound UTF8String];
 	}
+
+	NSString *getTimeString() const;
+	NSString *getRepeatString() const;
+	NSString *getSoundString() const;
+	NSString *getNameString() const;
+	
+	NSDictionary *serialize() const;
 
 private:
 	static void CollectSounds(bool force);
@@ -111,11 +120,13 @@ class Settings
 public:
 	static Settings &Get()
 	{
+		_settings.load();
 		return _settings;
 	}
 	
 	Settings()
 	{
+		_loaded = false;
 		resetToDefaults();
 	}
 	
@@ -138,16 +149,19 @@ public:
 	void setAlarm(int index, Alarm const &alarm)
 	{
 		_alarms[index] = alarm;
+		save();
 	}
 	
 	void addAlarm(Alarm const &alarm)
 	{
 		_alarms.push_back(alarm);
+		save();
 	}
 
 	void removeAlarm(int index)
 	{
 		_alarms.erase(_alarms.begin() + index);
+		save();
 	}
 	
 	bool getPlayTickSound() const
@@ -158,11 +172,16 @@ public:
 	void setPlayTickSound(bool playTickSound)
 	{
 		_playTickSound = playTickSound;
+		save();
 	}
 	
 private:
+	void load();
+	void save();
+
 	static Settings _settings;
 	
+	bool _loaded;
 	std::vector<Alarm> _alarms;
 	bool _playTickSound;
 };

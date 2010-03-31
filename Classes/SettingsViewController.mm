@@ -69,6 +69,23 @@ enum Section
 	}
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	switch (section)
+	{
+		case Section_Alarms:
+		{
+			return NSLocalizedString(@"Alarms", @"");
+		}
+		case Section_TickSound:
+		{
+			return NSLocalizedString(@"Settings", @"");
+		}
+	}
+	
+	return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";

@@ -6,14 +6,21 @@
 
 static NSString *_days[] =
 {
-	@"Monday",
-	@"Tuesday",
-	@"Wednesday",
-	@"Thursday",
-	@"Friday",
-	@"Saturday",
-	@"Sunday"
+	@"Every Monday",
+	@"Every Tuesday",
+	@"Every Wednesday",
+	@"Every Thursday",
+	@"Every Friday",
+	@"Every Saturday",
+	@"Every Sunday"
 };
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	
+	self.title = NSLocalizedString(@"Repeat", @"");
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
