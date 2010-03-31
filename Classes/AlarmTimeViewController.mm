@@ -48,7 +48,6 @@
     if (cell == nil)
 	{
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-		NSLog(@"alloc!");
     }
     
 	cell.textLabel.text = NSLocalizedString(@"Time", @"");

@@ -140,10 +140,7 @@ void Settings::load()
 		NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 		[ud registerDefaults:defaults];
 		
-		NSLog(@"%@", [ud dictionaryRepresentation]);
-
 		NSArray *alarms = [ud arrayForKey:@"alarms"];
-		NSLog(@"%@", alarms);
 		for (NSDictionary *i in alarms)
 		{
 			_alarms.push_back(Alarm(i));
