@@ -1,5 +1,5 @@
 #import "AlarmSoundViewController.h"
-#import <AVFoundation/AVFoundation.h>
+#import "Utils.h"
 
 @implementation AlarmSoundViewController
 
@@ -57,22 +57,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	int row = indexPath.row;
 	if (indexPath.section == 0)
 	{
-		assert(indexPath.row == 0);
+		assert(row == 0);
 		self.alarm->setSound(@"");
 	}
 	else
 	{
-		int row = indexPath.row;
 		self.alarm->setSound(Alarm::GetSound(row));
-		
-		// TODO: release player when done
-		AVAudioPlayer *player = [AVAudioPlayer alloc];
-		NSURL *url = [NSURL fileURLWithPath:Alarm::GetSoundFilename(row)];
-		NSError *error;
-		[player initWithContentsOfURL:url error:&error];
-		[player play];
+		PlaySound(Alarm::GetSoundFilename(row));
 	}
 
 	[self.tableView reloadData]; // TODO: inefficient
