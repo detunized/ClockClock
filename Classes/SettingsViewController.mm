@@ -96,11 +96,11 @@ enum Section
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	switch ([indexPath section])
+	switch (indexPath.section)
     {
 	case Section_Alarms:
 		{
-			int row = [indexPath row];
+			int row = indexPath.row;
 			if (row == [self tableView:tableView numberOfRowsInSection:Section_Alarms] - 1)
 			{
 				cell.textLabel.text = @"Add Alarm...";
@@ -108,6 +108,7 @@ enum Section
 			else
 			{
 				Alarm const &alarm = Settings::Get().getAlarm(row);
+				NSLog(@"%d (%@)", row, alarm.getTimeString());
 				cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", alarm.getHour(), alarm.getMinute()];
 			}
 
@@ -141,7 +142,7 @@ enum Section
 	AlarmViewController *alarm = [[AlarmViewController alloc] initWithNibName:@"AlarmViewController" bundle:nil];
 	alarm.delegate = self;
 	
-	_editAlarmIndex = [indexPath row];
+	_editAlarmIndex = indexPath.row;
 	if (_editAlarmIndex >= Settings::Get().getAlarmCount())
 	{
 		alarm.isNewAlarm = true;
@@ -173,6 +174,12 @@ enum Section
 		Settings::Get().setAlarm(_editAlarmIndex, [sender getAlarm]);
 	}
 	
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:Section_Alarms] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)onAlarmViewControllerDelete:(AlarmViewController *)sender
+{
+	Settings::Get().removeAlarm(_editAlarmIndex);
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:Section_Alarms] withRowAnimation:UITableViewRowAnimationFade];
 }
 

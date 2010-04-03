@@ -32,6 +32,8 @@ enum SectionTime
 {
     [super viewDidLoad];
 	
+	_deleted = false;
+	
 	if (self.isNewAlarm)
 	{
 		self.title = NSLocalizedString(@"New Alarm", @"");
@@ -88,7 +90,7 @@ enum SectionTime
         cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	switch ([indexPath section])
+	switch (indexPath.section)
     {
 		case Section_Enable:
 		{
@@ -104,7 +106,7 @@ enum SectionTime
 		}
 		case Section_Time:
 		{
-			switch ([indexPath row])
+			switch (indexPath.row)
 			{
 				case SectionTime_Time:
 				{
@@ -160,7 +162,7 @@ enum SectionTime
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {	
-	switch ([indexPath section])
+	switch (indexPath.section)
 	{	
 		case Section_Enable:
 		{
@@ -169,7 +171,7 @@ enum SectionTime
 		}
 		case Section_Time:
 		{
-			switch ([indexPath row])
+			switch (indexPath.row)
 			{
 				case SectionTime_Time:
 				{
@@ -213,6 +215,11 @@ enum SectionTime
 		}
 		case Section_Delete:
 		{
+			assert(indexPath.row == 0);
+			_deleted = true;
+			[self.delegate onAlarmViewControllerDelete:self];
+			[self.navigationController popViewControllerAnimated:YES];
+
 			break;
 		}
 		default:
@@ -233,7 +240,7 @@ enum SectionTime
 {
 	[super viewWillDisappear:animated];
 	
-	if (!self.isNewAlarm)
+	if (!self.isNewAlarm && !_deleted)
 	{
 		[self.delegate onAlarmViewControllerSave:self];
 	}
@@ -247,6 +254,7 @@ enum SectionTime
 
 - (void)save:(id)sender
 {
+	NSLog(@"Saveeeeeeeeeeeeeeeeeeeeeee!");
 	[self.delegate onAlarmViewControllerSave:self];
 	[self.navigationController popViewControllerAnimated:YES];
 }

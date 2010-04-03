@@ -8,13 +8,13 @@ namespace
 	
 	static const NSString *_shortDays[Alarm::Day_Count] =
 	{
+		@"Sun",
 		@"Mon",
 		@"Tue",
 		@"Wed",
 		@"Thu",
 		@"Fri",
 		@"Sat",
-		@"Sun"
 	};
 };
 
@@ -43,6 +43,23 @@ NSString *Alarm::GetSoundFilename(int index)
 	SoundMap::iterator i = _sounds.begin();
 	std::advance(i, index);
 	return i->second;
+}
+
+Alarm::Alarm()
+{
+	_enabled = true;
+
+	NSDateComponents *components = [[NSCalendar currentCalendar] components:-1 fromDate:[NSDate date]];
+	_hour = components.hour ;
+	_minute = components.minute;
+	
+	for (int i = 0; i < Day_Count; ++i)
+	{
+		_repeat[i] = false;
+	}
+	
+	_name = "Alarm";
+	_sound = [GetSound(0) UTF8String];
 }
 
 Alarm::Alarm(NSDictionary *archive)
@@ -94,6 +111,43 @@ NSString *Alarm::getNameString() const
 	return _name == "" ? @"No name" : getName();
 }
 
+NSDate *Alarm::getNextTimeGoOff() const
+{
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	NSDate *now = [NSDate date];
+
+	NSDateComponents *nowSplit = [cal components:-1 fromDate:now];
+	nowSplit.hour = _hour;
+	nowSplit.minute = _minute;
+	nowSplit.second = 0;
+	
+	NSDate *next = [cal dateFromComponents:nowSplit];
+	while ([next timeIntervalSinceDate:now] < 0)
+	{
+		NSDateComponents *day = [NSDateComponents new];
+		day.day = 1;
+		next = [cal dateByAddingComponents:day toDate:next options:0];
+		[day release];
+	}
+	
+	NSDate *nextRepeat = next;
+	int weekday = [nowSplit weekday];
+	for (int i = 0; i < Day_Count; ++i)
+	{
+		if (_repeat[(weekday + i) % Day_Count])
+		{
+			return nextRepeat;
+		}
+		
+		NSDateComponents *day = [NSDateComponents new];
+		day.day = 1;
+		nextRepeat = [cal dateByAddingComponents:day toDate:nextRepeat options:0];
+		[day release];
+	}
+
+	return next;
+}
+
 NSDictionary *Alarm::serialize() const
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
@@ -101,13 +155,13 @@ NSDictionary *Alarm::serialize() const
 			[NSNumber numberWithInt:_hour], @"hour", 
 			[NSNumber numberWithInt:_minute], @"minute", 
 			[NSArray arrayWithObjects:
+			 [NSNumber numberWithBool:_repeat[Day_Sunday]],
 			 [NSNumber numberWithBool:_repeat[Day_Monday]],
 			 [NSNumber numberWithBool:_repeat[Day_Tuesday]],
 			 [NSNumber numberWithBool:_repeat[Day_Wednesday]],
 			 [NSNumber numberWithBool:_repeat[Day_Thursday]],
 			 [NSNumber numberWithBool:_repeat[Day_Friday]],
 			 [NSNumber numberWithBool:_repeat[Day_Saturday]],
-			 [NSNumber numberWithBool:_repeat[Day_Sunday]],
 			 nil
 			 ], @"repeat", 
 			getName(), @"name",

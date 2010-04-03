@@ -11,6 +11,7 @@
 	id<AlarmViewControllerDelegate> delegate;
 	
 	Alarm _alarm;
+	bool _deleted;
 }
 
 @property (nonatomic, assign) bool isNewAlarm;
@@ -23,7 +24,10 @@
 
 @protocol AlarmViewControllerDelegate
 
+@required
+
 - (void)onAlarmViewControllerCancel:(AlarmViewController *)sender;
 - (void)onAlarmViewControllerSave:(AlarmViewController *)sender;
+- (void)onAlarmViewControllerDelete:(AlarmViewController *)sender;
 
 @end

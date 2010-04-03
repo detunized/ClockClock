@@ -8,13 +8,13 @@ class Alarm
 public:
 	enum Day
 	{
+		Day_Sunday,
 		Day_Monday,
 		Day_Tuesday,
 		Day_Wednesday,
 		Day_Thursday,
 		Day_Friday,
 		Day_Saturday,
-		Day_Sunday,
 		
 		Day_Count
 	};
@@ -23,18 +23,7 @@ public:
 	static NSString *GetSound(int index);
 	static NSString *GetSoundFilename(int index);
 	
-	Alarm()
-	{
-		_enabled = true;
-		_hour = 0;
-		_minute = 0;
-		
-		for (int i = 0; i < Day_Count; ++i)
-		{
-			_repeat[i] = false;
-		}
-	}
-	
+	Alarm();
 	Alarm(NSDictionary *archive);
 	
 	bool getEnabled() const
@@ -96,11 +85,13 @@ public:
 	{
 		_sound = [sound UTF8String];
 	}
-
+	
 	NSString *getTimeString() const;
 	NSString *getRepeatString() const;
 	NSString *getSoundString() const;
 	NSString *getNameString() const;
+	
+	NSDate *getNextTimeGoOff() const;
 	
 	NSDictionary *serialize() const;
 
@@ -160,8 +151,21 @@ public:
 
 	void removeAlarm(int index)
 	{
+		for (int i = 0; i < getAlarmCount(); ++i)
+		{
+			NSLog(_alarms[i].getTimeString());
+		}
+		
+		NSLog(@"%d", index);
+
 		_alarms.erase(_alarms.begin() + index);
-		save();
+//		save();
+
+		for (int i = 0; i < getAlarmCount(); ++i)
+		{
+			NSLog(_alarms[i].getTimeString());
+		}
+		
 	}
 	
 	bool getPlayTickSound() const

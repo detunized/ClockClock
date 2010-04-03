@@ -64,7 +64,7 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">Wednesday, September 18</string>
+						<string key="IBUIText"/>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">TrebuchetMS</string>
 							<double key="NSSize">35</double>

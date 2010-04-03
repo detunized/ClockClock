@@ -45,7 +45,7 @@ static float const _digits[10][6][2] =
 #undef D
 #undef N
 
-- (NSDate *)getTime
+NSDate *GetTime()
 {
 #ifdef SHOW_NICE_TIME
 	static NSTimeInterval _start = 0;
@@ -59,6 +59,36 @@ static float const _digits[10][6][2] =
 #else
 	return [NSDate date];
 #endif
+}
+
+static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
+{
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSDateComponents *components = [calendar components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:time];
+	hour = components.hour;
+	minute = components.minute;
+	second = components.second;
+}
+
+- (void)checkAlarms
+{
+	int hour;
+	int minute;
+	int second;
+	SplitTime(GetTime(), hour, minute, second);
+
+	Settings const &s = Settings::Get();
+	for (int i = 0, count = s.getAlarmCount(); i < count; ++i)
+	{
+		Alarm const &a = s.getAlarm(i);
+		if (a.getEnabled())
+		{
+			if (a.getHour() == hour && a.getMinute() == minute)
+			{
+				NSLog(@"Alarm %@ is going off!", a.getNameString());
+			}
+		}
+	}
 }
 
 - (void)setClock:(int)clock digit:(int)digit digitIndex:(int)digitIndex animationTime:(float)animationTime
@@ -89,13 +119,12 @@ static float const _digits[10][6][2] =
 
 - (void)setTime:(NSDate *)time animationTime:(float)animationTime
 {
-	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *components = [calendar components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:time];
-	int hour = [components hour];
-	int minute = [components minute];
+	int hour;
+	int minute;
+	int second;
+	SplitTime(time, hour, minute, second);
 	
 #ifdef TRANSITION_TEST
-	int second = [components second];
 	hour = second;
 	minute = second;
 #endif
@@ -108,9 +137,10 @@ static float const _digits[10][6][2] =
 
 - (void)setSeconds:(NSDate *)time
 {
-	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *components = [calendar components:(NSSecondCalendarUnit) fromDate:time];
-	int second = [components second];
+	int hour;
+	int minute;
+	int second;
+	SplitTime(time, hour, minute, second);
 	
 	if (second != _currentSeconds)
 	{
@@ -197,7 +227,7 @@ static float const _digits[10][6][2] =
 	_currentDigits[2] = -1;
 	_currentDigits[3] = -1;
 	_currentSeconds = -1;
-	[self setTime:[self getTime] animationTime:0];
+	[self setTime:GetTime() animationTime:0];
 	[self goCrazy:(M_PI * 4) duration:1];
 	
 	// make them slowly appear
@@ -318,7 +348,7 @@ static float const _digits[10][6][2] =
 
 - (void)timeUpdateCallback:(NSTimer *)timer
 {
-	NSDate *now = [self getTime];
+	NSDate *now = GetTime();
 	
 	// date
 	_date.text = [_dateFormatter stringFromDate:now];
@@ -336,6 +366,8 @@ static float const _digits[10][6][2] =
 		// otherwise postpone it
 		_timeNeedUpdating = true;
 	}
+	
+	[self checkAlarms];
 }
 
 - (void)animationCallback:(NSTimer *)timer
@@ -357,7 +389,7 @@ static float const _digits[10][6][2] =
 		// postponed update
 		if (_timeNeedUpdating)
 		{
-			[self setTime:[self getTime] animationTime:_timeChangeAnimationDuration];
+			[self setTime:GetTime() animationTime:_timeChangeAnimationDuration];
 			_timeNeedUpdating = false;
 		}
 	}

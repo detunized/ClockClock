@@ -6,13 +6,13 @@
 
 static NSString *_days[] =
 {
+	@"Every Sunday",
 	@"Every Monday",
 	@"Every Tuesday",
 	@"Every Wednesday",
 	@"Every Thursday",
 	@"Every Friday",
 	@"Every Saturday",
-	@"Every Sunday"
 };
 
 - (void)viewDidLoad
@@ -42,7 +42,7 @@ static NSString *_days[] =
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	int row = [indexPath row];
+	int row = indexPath.row;
 	Alarm::Day day = (Alarm::Day)row;
 	cell.textLabel.text = _days[row];
 	cell.accessoryType = self.alarm->getRepeat(day) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
@@ -52,7 +52,7 @@ static NSString *_days[] =
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	int row = [indexPath row];
+	int row = indexPath.row;
 	Alarm::Day day = (Alarm::Day)row;
 	self.alarm->setRepeat(day, !self.alarm->getRepeat(day));
 	[tableView cellForRowAtIndexPath:indexPath].accessoryType = self.alarm->getRepeat(day) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
