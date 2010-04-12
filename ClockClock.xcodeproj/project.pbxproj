@@ -38,6 +38,7 @@
 		60DBB4891156A140001E7FB2 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 60DBB4881156A140001E7FB2 /* background.png */; };
 		60DBB5371156B0B6001E7FB2 /* ClockView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 60DBB5361156B0B6001E7FB2 /* ClockView.mm */; };
 		60DBB66B1156C8C2001E7FB2 /* ClockClockWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 60DBB66A1156C8C2001E7FB2 /* ClockClockWindow.mm */; };
+		60F3218B116904DF00B1FF60 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F3218A116904DF00B1FF60 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +88,8 @@
 		60DBB5361156B0B6001E7FB2 /* ClockView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClockView.mm; sourceTree = "<group>"; };
 		60DBB6691156C8C2001E7FB2 /* ClockClockWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClockClockWindow.h; sourceTree = "<group>"; };
 		60DBB66A1156C8C2001E7FB2 /* ClockClockWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClockClockWindow.mm; sourceTree = "<group>"; };
+		60F320311168BB6F00B1FF60 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		60F3218A116904DF00B1FF60 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* ClockClock-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ClockClock-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,6 +102,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				60BCC1F71157166B00844D6A /* AVFoundation.framework in Frameworks */,
+				60F3218B116904DF00B1FF60 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +138,7 @@
 				609F9F5A115FF7FA004FFB65 /* SettingsViewController.mm */,
 				6071B1651166E26500F61445 /* Utils.h */,
 				6071B1641166E26500F61445 /* Utils.mm */,
+				60F320311168BB6F00B1FF60 /* Config.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -155,7 +160,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				60BCC1F61157166B00844D6A /* AVFoundation.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -190,6 +194,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				60F3218A116904DF00B1FF60 /* AudioToolbox.framework */,
+				60BCC1F61157166B00844D6A /* AVFoundation.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,

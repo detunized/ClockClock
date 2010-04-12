@@ -34,26 +34,19 @@ enum SectionTime
 	
 	_deleted = false;
 	
-	if (self.isNewAlarm)
-	{
-		self.title = NSLocalizedString(@"New Alarm", @"");
-		
-		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
-																		  style:UIBarButtonItemStyleBordered
-																		 target:self
-																		 action:@selector(cancel:)] autorelease];
-		self.navigationItem.leftBarButtonItem = cancelButton;
-		
-		UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"")
-																		style:UIBarButtonItemStyleBordered
-																	   target:self
-																	   action:@selector(save:)] autorelease];
-		self.navigationItem.rightBarButtonItem = saveButton;
-	}
-	else
-	{
-		self.title = NSLocalizedString(@"Edit Alarm", @"");
-	}
+	self.title = NSLocalizedString(self.isNewAlarm ? @"New Alarm" : @"Edit Alarm", @"");
+
+	UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
+																	  style:UIBarButtonItemStyleBordered
+																	 target:self
+																	 action:@selector(cancel:)] autorelease];
+	self.navigationItem.leftBarButtonItem = cancelButton;
+	
+	UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"")
+																	style:UIBarButtonItemStyleBordered
+																   target:self
+																   action:@selector(save:)] autorelease];
+	self.navigationItem.rightBarButtonItem = saveButton;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -236,16 +229,6 @@ enum SectionTime
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:Section_Time] withRowAnimation:UITableViewRowAnimationNone];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-	
-	if (!self.isNewAlarm && !_deleted)
-	{
-		[self.delegate onAlarmViewControllerSave:self];
-	}
-}
-
 - (void)cancel:(id)sender
 {
 	[self.delegate onAlarmViewControllerCancel:self];
@@ -254,7 +237,6 @@ enum SectionTime
 
 - (void)save:(id)sender
 {
-	NSLog(@"Saveeeeeeeeeeeeeeeeeeeeeee!");
 	[self.delegate onAlarmViewControllerSave:self];
 	[self.navigationController popViewControllerAnimated:YES];
 }

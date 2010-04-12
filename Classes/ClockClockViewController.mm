@@ -1,9 +1,12 @@
+#import <AudioToolbox/AudioToolbox.h>
 #import "ClockClockViewController.h"
 #import "ClockView.h"
 #import "Settings.h"
+#import "Utils.h"
 
 //#define TRANSITION_TEST
 //#define SHOW_NICE_TIME
+#define ALARM_TEST
 
 @implementation ClockClockViewController
 
@@ -61,32 +64,63 @@ NSDate *GetTime()
 #endif
 }
 
-static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
-{
-	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *components = [calendar components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:time];
-	hour = components.hour;
-	minute = components.minute;
-	second = components.second;
-}
-
 - (void)checkAlarms
 {
 	int hour;
 	int minute;
-	int second;
-	SplitTime(GetTime(), hour, minute, second);
+	int weekday;
+	SplitTime(GetTime(), &hour, &minute, 0, &weekday);
 
-	Settings const &s = Settings::Get();
+	Settings &s = Settings::Get();
 	for (int i = 0, count = s.getAlarmCount(); i < count; ++i)
 	{
 		Alarm const &a = s.getAlarm(i);
-		if (a.getEnabled())
+		if (a.getEnabled() && a.getHour() == hour && a.getMinute() == minute && (!a.isRepeating() || a.getRepeat((Alarm::Day)weekday)))
 		{
-			if (a.getHour() == hour && a.getMinute() == minute)
+			bool inUse = false;
+			for (int j = 0, count = _goingOffAlarms.size(); j < count; ++j)
 			{
-				NSLog(@"Alarm %@ is going off!", a.getNameString());
+				if (_goingOffAlarms[j].alarmIndex == i)
+				{
+					inUse = true;
+					break;
+				}
 			}
+			
+			if (!inUse)
+			{
+				if (!a.isRepeating())
+				{
+					Alarm a = s.getAlarm(i);
+					a.setEnabled(false);
+//					s.setAlarm(i, a);
+				}
+				
+				GoingOffAlarmInfo info;
+				info.alarmIndex = i;
+				info.soundPlayedAt = 0;
+				_goingOffAlarms.push_back(info);
+			}
+		}
+	}
+	
+	NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+	for (int i = 0, count = _goingOffAlarms.size(); i < count; ++i)
+	{
+		GoingOffAlarmInfo &a = _goingOffAlarms[i];
+		if (now - a.soundPlayedAt > 3)
+		{
+			NSString *sound = s.getAlarm(a.alarmIndex).getSoundFilename();
+			if (sound)
+			{
+				PlaySound(sound);
+			}
+			else
+			{
+				AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+			}
+			
+			a.soundPlayedAt = now;
 		}
 	}
 }
@@ -122,7 +156,7 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 	int hour;
 	int minute;
 	int second;
-	SplitTime(time, hour, minute, second);
+	SplitTime(time, &hour, &minute, &second);
 	
 #ifdef TRANSITION_TEST
 	hour = second;
@@ -137,10 +171,8 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 
 - (void)setSeconds:(NSDate *)time
 {
-	int hour;
-	int minute;
 	int second;
-	SplitTime(time, hour, minute, second);
+	SplitTime(time, 0, 0, &second);
 	
 	if (second != _currentSeconds)
 	{
@@ -149,7 +181,7 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 		
 		if (_infoVisible && Settings::Get().getPlayTickSound())
 		{
-			[_tick play];
+			PlaySound([[NSBundle mainBundle] pathForResource:@"tick" ofType:@"wav"]);
 		}
 	}
 }
@@ -174,11 +206,6 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 		[_clocks[i] spinRandomly:angle duration:duration];
 		_goingCrazy = true;
 	}
-}
-
-- (void)playSound
-{
-	[_tick play];
 }
 
 - (void)viewDidLoad
@@ -242,14 +269,6 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 	
 	[UIView commitAnimations];
 	
-	// load ticking sound
-	_tick = [AVAudioPlayer alloc];
-	NSString *path = [[NSBundle mainBundle] pathForResource:@"tick" ofType:@"wav"];
-	NSURL *url = [NSURL fileURLWithPath:path];
-	NSError *error;
-	[_tick initWithContentsOfURL:url error:&error];
-	[_tick prepareToPlay];
-	
 	// setup timers
 	[NSTimer scheduledTimerWithTimeInterval:1.0f
 									 target:self
@@ -264,6 +283,23 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 									repeats:YES];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shakeCallback) name:@"shake" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shakeCallback) name:@"alarm" object:nil];
+	
+#ifdef ALARM_TEST
+	Settings &s = Settings::Get();
+	while (s.getAlarmCount() > 0)
+	{
+		s.removeAlarm(0);
+	}
+	
+	int hour;
+	int minute;
+	SplitTime(GetTime(), &hour, &minute);
+	Alarm a;
+	a.setHour(hour + (minute + 1) / 60);
+	a.setMinute((minute + 1) % 60);
+	s.addAlarm(a);
+#endif
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -278,8 +314,6 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 
 - (void)viewDidUnload
 {
-	[_tick stop];
-
 	while (!_clocks.empty())
 	{
 		delete _clocks.back();
@@ -291,7 +325,6 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 {
     [_dateFormatter release];
 	[_secondsFormatter release];
-	[_tick release];
 	
 	[super dealloc];
 }
@@ -366,8 +399,6 @@ static void SplitTime(NSDate *time, int &hour, int &minute, int &second)
 		// otherwise postpone it
 		_timeNeedUpdating = true;
 	}
-	
-	[self checkAlarms];
 }
 
 - (void)animationCallback:(NSTimer *)timer

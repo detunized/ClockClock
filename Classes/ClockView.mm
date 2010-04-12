@@ -1,7 +1,5 @@
 #import "ClockView.h"
 
-static float const HAND_WIDTH = 7;
-
 @implementation ClockView
 
 - (id)initWithFrame:(CGRect)frame
@@ -36,11 +34,11 @@ static float const HAND_WIDTH = 7;
 
 - (void)drawClock:(CGContextRef)context at:(CGPoint)at hourAngle:(float)hourAngle minuteAngle:(float)minuteAngle
 {
-	CGContextSetRGBStrokeColor(context, 1, 1, 1, 1);
-	CGContextSetLineWidth(context, HAND_WIDTH);
+	CGContextSetRGBStrokeColor(context, CONFIG_HAND_COLOR_R, CONFIG_HAND_COLOR_G, CONFIG_HAND_COLOR_B, CONFIG_HAND_COLOR_A);
+	CGContextSetLineWidth(context, CONFIG_HAND_WIDTH);
 	
-	[self drawHand:context at:at length:19 angle:hourAngle];
-	[self drawHand:context at:at length:21 angle:minuteAngle];
+	[self drawHand:context at:at length:CONFIG_HOUR_HAND_LENGTH angle:hourAngle];
+	[self drawHand:context at:at length:CONFIG_MINUTE_HAND_LENGTH angle:minuteAngle];
 	
 	CGContextStrokePath(context);
 }

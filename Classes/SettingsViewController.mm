@@ -108,7 +108,6 @@ enum Section
 			else
 			{
 				Alarm const &alarm = Settings::Get().getAlarm(row);
-				NSLog(@"%d (%@)", row, alarm.getTimeString());
 				cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", alarm.getHour(), alarm.getMinute()];
 			}
 

@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+@class AlarmListener;
+
 class Alarm
 {
 public:
@@ -24,7 +26,6 @@ public:
 	static NSString *GetSoundFilename(int index);
 	
 	Alarm();
-	Alarm(NSDictionary *archive);
 	
 	bool getEnabled() const
 	{
@@ -56,7 +57,7 @@ public:
 		_minute = minute;
 	}
 	
-	bool getRepeat(Day day)
+	bool getRepeat(Day day) const
 	{
 		return _repeat[day];
 	}
@@ -64,6 +65,19 @@ public:
 	void setRepeat(Day day, bool repeat)
 	{
 		_repeat[day] = repeat;
+	}
+	
+	bool isRepeating() const
+	{
+		for (int i = 0; i < Day_Count; ++i)
+		{
+			if (_repeat[i])
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	NSString *getName() const
@@ -90,13 +104,37 @@ public:
 	NSString *getRepeatString() const;
 	NSString *getSoundString() const;
 	NSString *getNameString() const;
-	
+	NSString *getSoundFilename() const;
 	NSDate *getNextTimeGoOff() const;
 	
-	NSDictionary *serialize() const;
+	bool isGoingOff() const
+	{
+		return _goingOff;
+	}
+	
+	void setGoingOff(bool goingOff)
+	{
+		_goingOff = goingOff;
+	}
+	
+	bool isSnoozing() const
+	{
+		return _snoozing;
+	}
+	
+	void setSnoozing(bool snoozing)
+	{
+		_snoozing = snoozing;
+	}
+	
+	void setTimer();
+	void removeTimer();
 
 private:
 	static void CollectSounds(bool force);
+
+	Alarm(NSDictionary *archive);
+	NSDictionary *serialize() const;
 	
 	bool _enabled;
 	int _hour;
@@ -104,6 +142,13 @@ private:
 	bool _repeat[Day_Count];
 	std::string _name;
 	std::string _sound;
+	
+	AlarmListener *_listener;
+	NSTimer *_timer;
+	bool _goingOff;
+	bool _snoozing;
+	
+	friend class Settings;
 };
 
 class Settings
@@ -140,32 +185,22 @@ public:
 	void setAlarm(int index, Alarm const &alarm)
 	{
 		_alarms[index] = alarm;
+		_alarms[index].setTimer();
 		save();
 	}
 	
 	void addAlarm(Alarm const &alarm)
 	{
 		_alarms.push_back(alarm);
+		_alarms.back().setTimer();
 		save();
 	}
 
 	void removeAlarm(int index)
 	{
-		for (int i = 0; i < getAlarmCount(); ++i)
-		{
-			NSLog(_alarms[i].getTimeString());
-		}
-		
-		NSLog(@"%d", index);
-
+		_alarms[index].removeTimer();
 		_alarms.erase(_alarms.begin() + index);
-//		save();
-
-		for (int i = 0; i < getAlarmCount(); ++i)
-		{
-			NSLog(_alarms[i].getTimeString());
-		}
-		
+		save();
 	}
 	
 	bool getPlayTickSound() const

@@ -23,7 +23,13 @@
 	int _currentDigits[4];
 	int _currentSeconds;
 	
-	AVAudioPlayer *_tick;
+	struct GoingOffAlarmInfo
+	{
+		int alarmIndex;
+		NSTimeInterval soundPlayedAt;
+	};
+
+	std::vector<GoingOffAlarmInfo> _goingOffAlarms;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *_date;

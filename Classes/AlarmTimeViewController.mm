@@ -40,7 +40,6 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-//	NSDate *now = [NSDate now];
 	NSDate *next = self.alarm->getNextTimeGoOff();
 	NSTimeInterval dt = [next timeIntervalSinceNow];
 	
