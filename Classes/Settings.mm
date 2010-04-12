@@ -67,8 +67,8 @@ static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
 		assert(self.alarm->isSnoozing());
 	}
 
-	self.alert = [[[UIAlertView alloc] initWithTitle:@"Alarm" 
-											message:@"What?" 
+	self.alert = [[[UIAlertView alloc] initWithTitle:self.alarm->getNameString() 
+											message:nil//@"What?" 
 										   delegate:self 
 								  cancelButtonTitle:@"Turn off" 
 								  otherButtonTitles:@"Snooze", nil] autorelease];
@@ -98,7 +98,7 @@ static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
 			{
 				// set alarm for next repeat cycle
 				assert(self.alarm->isRepeating());
-				self.alarm->setTimer();
+				self.alarm->setTimer(true);
 			}
 			
 			self.alarm = 0;
@@ -142,8 +142,6 @@ namespace
 		@"Fri",
 		@"Sat",
 	};
-
-	AlarmListener *_alarmListener = [AlarmListener new];
 };
 
 Settings Settings::_settings;
@@ -187,6 +185,8 @@ Alarm::Alarm()
 	
 	_listener = 0;
 	_timer = 0;
+	_goingOff = false;
+	_snoozing = false;
 }
 
 NSString *Alarm::getTimeString() const
@@ -294,7 +294,10 @@ Alarm::Alarm(NSDictionary *archive)
 		_repeat[i] = [[repeat objectAtIndex:i] boolValue];
 	}
 	
+	_listener = 0;
 	_timer = 0;
+	_goingOff = false;
+	_snoozing = false;
 }
 
 NSDictionary *Alarm::serialize() const
@@ -318,26 +321,39 @@ NSDictionary *Alarm::serialize() const
 			nil];
 }
 
-void Alarm::setTimer()
+void Alarm::setTimer(bool keepListener)
 {
 	removeTimer();
 
 	if (_enabled)
 	{
+		if (!keepListener)
+		{
+			assert(!_listener);
+			_listener = [AlarmListener new];
+		}
+
 		_timer = [[NSTimer alloc] initWithFireDate:getNextTimeGoOff() 
 										  interval:0 
-											target:_alarmListener 
+											target:_listener 
 										  selector:@selector(timerCallback:)
 										  userInfo:[NSNumber numberWithUnsignedInt:(unsigned int)this]
 										   repeats:NO];
 		[[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSDefaultRunLoopMode];
 		
-		NSLog(@"Timer set on %@", _timer.fireDate);
+//		NSLog(@"Timer set on %@", _timer.fireDate);
 	}
 }
 
-void Alarm::removeTimer()
+void Alarm::removeTimer(bool keepListener)
 {
+	if (!keepListener)
+	{
+		[_listener reset];
+		[_listener release];
+		_listener = 0;
+	}
+	
 	[_timer release];
 	_timer = 0;
 }

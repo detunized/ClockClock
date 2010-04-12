@@ -6,7 +6,7 @@
 
 //#define TRANSITION_TEST
 //#define SHOW_NICE_TIME
-#define ALARM_TEST
+//#define ALARM_TEST
 
 @implementation ClockClockViewController
 
@@ -298,6 +298,7 @@ NSDate *GetTime()
 	Alarm a;
 	a.setHour(hour + (minute + 1) / 60);
 	a.setMinute((minute + 1) % 60);
+	s.addAlarm(a);
 	s.addAlarm(a);
 #endif
 }

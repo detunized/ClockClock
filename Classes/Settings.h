@@ -127,8 +127,8 @@ public:
 		_snoozing = snoozing;
 	}
 	
-	void setTimer();
-	void removeTimer();
+	void setTimer(bool keepListener = false);
+	void removeTimer(bool keepListener = false);
 
 private:
 	static void CollectSounds(bool force);
