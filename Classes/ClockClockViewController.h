@@ -1,5 +1,3 @@
-#import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import <vector>
 #import "ClockView.h"
 #import "SecondsView.h"

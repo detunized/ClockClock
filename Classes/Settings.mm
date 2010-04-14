@@ -10,20 +10,20 @@ enum AlarmButton
 	AlarmButton_Count
 };
 
-static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
-
 @interface AlarmListener: NSObject<UIAlertViewDelegate>
 {
 	UIAlertView *alert;
 	Alarm *alarm;
 	NSTimer *buzzTimer;
 	NSTimer *snoozeTimer;
+	AVAudioPlayer *sound;
 }
 
 @property (nonatomic, retain) UIAlertView *alert;
 @property (nonatomic, assign) Alarm *alarm;
 @property (nonatomic, retain) NSTimer *buzzTimer;
 @property (nonatomic, retain) NSTimer *snoozeTimer;
+@property (nonatomic, retain) AVAudioPlayer *sound;
 
 @end
 
@@ -33,6 +33,7 @@ static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
 @synthesize alarm;
 @synthesize buzzTimer;
 @synthesize snoozeTimer;
+@synthesize sound;
 
 - (void)reset
 {
@@ -44,6 +45,8 @@ static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
 	
 	[self.snoozeTimer invalidate];
 	self.snoozeTimer = nil;
+	
+	self.sound = nil;
 }
 
 - (void)timerCallback:(NSTimer*)timer
@@ -73,8 +76,13 @@ static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
 								  cancelButtonTitle:@"Turn off" 
 								  otherButtonTitles:@"Snooze", nil] autorelease];
 	
-	PlaySound(self.alarm->getSoundFilename());
-	self.buzzTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(playSound:) userInfo:nil repeats:YES];
+	self.sound = LoadSound(self.alarm->getSoundFilename());
+	[self.sound play];
+	self.buzzTimer = [NSTimer scheduledTimerWithTimeInterval:self.sound.duration + CONFIG_TIME_BETWEEN_BUZZES 
+													  target:self 
+													selector:@selector(playSound:) 
+													userInfo:nil 
+													 repeats:YES];
 	
 	[self.alert show];
 }
@@ -110,7 +118,11 @@ static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
 			self.alarm->setSnoozing(true); 
 			
 			[self.snoozeTimer invalidate];
-			self.snoozeTimer = [NSTimer scheduledTimerWithTimeInterval:SnoozeTime target:self selector:@selector(timerCallback:) userInfo:nil repeats:NO];
+			self.snoozeTimer = [NSTimer scheduledTimerWithTimeInterval:CONFIG_SNOOZE_TIME 
+																target:self 
+															  selector:@selector(timerCallback:) 
+															  userInfo:nil 
+															   repeats:NO];
 
 			break;
 		}
@@ -122,7 +134,7 @@ static int const SnoozeTime = 15;//10 * 60; // snooze in 10 minutes
 
 - (void)playSound:(NSTimer*)timer
 {
-	PlaySound(self.alarm->getSoundFilename());
+	[self.sound play];
 }
 
 @end
@@ -272,7 +284,7 @@ void Alarm::CollectSounds(bool force)
 {
 	if (force || _sounds.size() == 0)
 	{
-		NSArray *filenames = [[NSBundle mainBundle] pathsForResourcesOfType:@"wav" inDirectory:@"alarms"];
+		NSArray *filenames = [[NSBundle mainBundle] pathsForResourcesOfType:@"m4a" inDirectory:@"alarms"];
 		for (NSString *i in filenames)
 		{
 			_sounds[[[[i lastPathComponent] stringByDeletingPathExtension] UTF8String]] = [i copy];
@@ -341,7 +353,7 @@ void Alarm::setTimer(bool keepListener)
 										   repeats:NO];
 		[[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSDefaultRunLoopMode];
 		
-//		NSLog(@"Timer set on %@", _timer.fireDate);
+		//NSLog(@"Timer set on %@ (alarm: 0x%08x)", _timer.fireDate, _timer.userInfo);
 	}
 }
 
@@ -354,6 +366,8 @@ void Alarm::removeTimer(bool keepListener)
 		_listener = 0;
 	}
 	
+	//NSLog(@"Timer %@ (alarm: 0x%08x) removed", _timer.fireDate, _timer.userInfo);
+	[_timer invalidate];
 	[_timer release];
 	_timer = 0;
 }

@@ -1,11 +1,3 @@
-//
-//  SettingsViewController.mm
-//  ClockClock
-//
-//  Created by Dmitry Yakimenko on 3/28/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "SettingsViewController.h"
 
 enum Section

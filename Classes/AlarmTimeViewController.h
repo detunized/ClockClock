@@ -1,4 +1,3 @@
-#import <UIKit/UIKit.h>
 #import "Settings.h"
 
 @interface AlarmTimeViewController: UIViewController<UITableViewDataSource>

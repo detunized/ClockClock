@@ -1,4 +1,3 @@
-#import <UIKit/UIKit.h>
 #import "ClockClockWindow.h"
 #import "ClockClockViewController.h"
 

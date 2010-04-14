@@ -1,4 +1,3 @@
-#import <AudioToolbox/AudioToolbox.h>
 #import "ClockClockViewController.h"
 #import "ClockView.h"
 #import "Settings.h"
@@ -7,6 +6,7 @@
 //#define TRANSITION_TEST
 //#define SHOW_NICE_TIME
 //#define ALARM_TEST
+//#define MULTIPLE_ALARM_TEST
 
 @implementation ClockClockViewController
 
@@ -299,7 +299,9 @@ NSDate *GetTime()
 	a.setHour(hour + (minute + 1) / 60);
 	a.setMinute((minute + 1) % 60);
 	s.addAlarm(a);
+#ifdef MULTIPLE_ALARM_TEST
 	s.addAlarm(a);
+#endif
 #endif
 }
 

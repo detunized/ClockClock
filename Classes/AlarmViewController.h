@@ -1,6 +1,3 @@
-#import <UIKit/UIKit.h>
-
-#import <UIKit/UIKit.h>
 #import "Settings.h"
 
 @protocol AlarmViewControllerDelegate;

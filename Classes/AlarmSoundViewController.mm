@@ -4,6 +4,7 @@
 @implementation AlarmSoundViewController
 
 @synthesize alarm;
+@synthesize soundPlayer;
 
 - (void)viewDidLoad
 {
@@ -66,7 +67,11 @@
 	else
 	{
 		self.alarm->setSound(Alarm::GetSound(row));
-		PlaySound(Alarm::GetSoundFilename(row));
+		
+		[self.soundPlayer stop];
+		self.soundPlayer = LoadSound(Alarm::GetSoundFilename(row));
+		self.soundPlayer.currentTime = 0;
+		[self.soundPlayer play];
 	}
 
 	[self.tableView reloadData]; // TODO: inefficient
